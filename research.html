@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Research Project Walkthrough</title>
+  <style>
+    :root {
+      --bg: #f7f4ef;
+      --paper: #fffdf9;
+      --ink: #1f1d1a;
+      --muted: #5e5a54;
+      --line: #d8d1c7;
+      --accent: #7a2e2e;
+      --accent-soft: #efe1dc;
+      --accent-deep: #532020;
+      --shadow: 0 10px 30px rgba(31, 29, 26, 0.08);
+      --radius: 18px;
+      --maxw: 1200px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: linear-gradient(180deg, #f3eee7 0%, #f8f5f0 100%);
+      color: var(--ink);
+      line-height: 1.6;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .page {
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 28px 18px 60px;
+    }
+
+    .hero {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+      padding: 34px 28px;
+      margin-bottom: 22px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      right: -60px;
+      top: -60px;
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(122,46,46,0.12) 0%, rgba(122,46,46,0.03) 60%, transparent 75%);
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      display: inline-block;
+      font-size: 0.82rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    h1, h2, h3, h4 {
+      line-height: 1.15;
+      margin: 0 0 12px;
+      font-family: Georgia, "Times New Roman", serif;
+    }
+
+    h1 {
+      font-size: clamp(2.2rem, 4vw, 4rem);
+      max-width: 12ch;
+    }
+
+    .subtitle {
+      max-width: 720px;
+      font-size: 1.08rem;
+      color: var(--muted);
+      margin: 14px 0 0;
+    }
+
+    .topnav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 14px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: #faf7f2;
+      color: var(--ink);
+      font-size: 0.95rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 18px;
+    }
+
+    .card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 22px;
+    }
+
+    .full { grid-column: span 12; }
+    .half { grid-column: span 6; }
+    .third { grid-column: span 4; }
+    .two-third { grid-column: span 8; }
+
+    .section-title {
+      font-size: 1.7rem;
+      margin-bottom: 14px;
+    }
+
+    .lede {
+      font-size: 1.02rem;
+      color: var(--muted);
+      margin-bottom: 16px;
+      max-width: 75ch;
+    }
+
+    .kicker {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .framework {
+      display: grid;
+      grid-template-columns: 110px 1fr 1fr;
+      gap: 10px;
+      margin-top: 12px;
+      align-items: stretch;
+    }
+
+    .framework .label,
+    .framework .cell,
+    .framework .corner {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 14px;
+      background: #fcfaf6;
+    }
+
+    .framework .corner {
+      background: var(--accent-soft);
+      font-weight: 700;
+      color: var(--accent-deep);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .framework .label {
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      background: #faf7f2;
+    }
+
+    .framework .cell h4 {
+      font-size: 1.08rem;
+      margin-bottom: 8px;
+    }
+
+    .framework .cell p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.96rem;
+    }
+
+    .steps {
+      display: grid;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 54px 1fr;
+      gap: 14px;
+      align-items: start;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #fcfaf6;
+    }
+
+    .step-number {
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 1.1rem;
+      font-family: "Inter", sans-serif;
+    }
+
+    .step h4 {
+      font-size: 1.08rem;
+      margin-bottom: 6px;
+      font-family: "Inter", sans-serif;
+    }
+
+    .step p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .criteria-list,
+    .bullet-list {
+      margin: 12px 0 0;
+      padding-left: 18px;
+    }
+
+    .criteria-list li,
+    .bullet-list li {
+      margin-bottom: 8px;
+    }
+
+    .walkthrough {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 18px;
+      margin-top: 14px;
+    }
+
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: #fcfaf6;
+      padding: 16px;
+    }
+
+    .paper-box {
+      background: #fbf5f2;
+      border-left: 5px solid var(--accent);
+      padding: 16px;
+      border-radius: 14px;
+      margin-bottom: 14px;
+    }
+
+    .paper-box p:last-child,
+    .panel p:last-child {
+      margin-bottom: 0;
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .tag {
+      display: inline-flex;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: var(--accent-soft);
+      color: var(--accent-deep);
+      font-size: 0.88rem;
+      font-weight: 600;
+      border: 1px solid #e6cfc8;
+    }
+
+    .scorecard {
+      display: grid;
+      gap: 10px;
+    }
+
+    .score-item {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 12px 14px;
+      background: #fffdf9;
+    }
+
+    .score-item strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .rubric {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .rubric-card {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 16px;
+      background: #fcfaf6;
+    }
+
+    .rubric-card h4 {
+      font-size: 1.02rem;
+      margin-bottom: 8px;
+      font-family: "Inter", sans-serif;
+    }
+
+    .callout {
+      border-left: 5px solid var(--accent);
+      padding: 16px 18px;
+      background: var(--accent-soft);
+      border-radius: 0 14px 14px 0;
+      color: var(--accent-deep);
+      font-weight: 600;
+      margin-top: 14px;
+    }
+
+    .process-line {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      margin-top: 10px;
+    }
+
+    .process-node {
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #fcfaf6;
+      font-weight: 600;
+    }
+
+    .arrow {
+      color: var(--accent);
+      font-weight: 800;
+      font-size: 1.1rem;
+    }
+
+    .footer {
+      margin-top: 24px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 960px) {
+      .half,
+      .third,
+      .two-third {
+        grid-column: span 12;
+      }
+
+      .walkthrough {
+        grid-template-columns: 1fr;
+      }
+
+      .framework {
+        grid-template-columns: 1fr;
+      }
+
+      .framework .corner,
+      .framework .label {
+        justify-content: flex-start;
+        text-align: left;
+      }
+
+      .rubric {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+<header class="hero">
+  <div class="eyebrow">Northeastern University · Directed Study</div>
+  
+  <h1>Mirror or Self-Portrait</h1>
+  
+  <p style="font-size:1.25rem; font-weight:600; margin-top:6px;">
+    A Conceptual Framework for Understanding Ethical Discourse in Artificial Intelligence
+  </p>
+
+  <p class="subtitle">
+    Jo Cichon · M.S. Computer Science · Northeastern University
+  </p>
+
+  <p class="subtitle" style="margin-top:10px;">
+    This companion page extends the poster by walking through the research method,
+    the emergent framework, and the coding process used to evaluate how individual
+    papers map across ethical and conceptual dimensions.
+  </p>
+
+  <nav class="topnav" aria-label="Section navigation">
+    <a class="pill" href="#project">Project</a>
+    <a class="pill" href="#framework">Framework</a>
+    <a class="pill" href="#method">Method</a>
+    <a class="pill" href="#coding">Coding Process</a>
+    <a class="pill" href="#walkthrough">Paper Walkthrough</a>
+    <a class="pill" href="#dataset">Outputs</a>
+  </nav>
+</header>
+
+    <main class="grid">
+      <section class="card full" id="project">
+        <div class="kicker">1. Project overview</div>
+        <h2 class="section-title">What this project asks</h2>
+        <p class="lede">
+          This research project investigates how ethical discourse in artificial intelligence is framed in scholarly literature.
+          Rather than treating AI ethics as a single category, the project asks what assumptions papers make about where ethics
+          resides: in the system itself, in the people who design it, in the data it reflects, or in the context of its use.
+        </p>
+        <div class="process-line" aria-label="Project flow">
+          <div class="process-node">Systematic literature review</div>
+          <div class="arrow">→</div>
+          <div class="process-node">Iterative coding</div>
+          <div class="arrow">→</div>
+          <div class="process-node">Framework refinement</div>
+          <div class="arrow">→</div>
+          <div class="process-node">Paper mapping</div>
+          <div class="arrow">→</div>
+          <div class="process-node">Labeled dataset</div>
+        </div>
+        <div class="callout">
+          Central idea: the framework was not simply imposed on the literature. It emerged through repeated reading,
+          comparison, and coding of papers, then became a tool for evaluating future papers more consistently.
+        </div>
+      </section>
+
+      <section class="card full" id="framework">
+        <div class="kicker">2. Analytical framework</div>
+        <h2 class="section-title">The two-axis framework</h2>
+        <p class="lede">
+          Papers were evaluated along two intersecting dimensions. The first asks whether AI is treated primarily as a
+          <strong>mirror</strong> of human behavior, data, bias, or institutions, or as a <strong>self-portrait</strong>
+          of human design choices, intentions, and constructed values. The second asks whether ethics is framed as a
+          <strong>checklist</strong> problem of compliance and control, or as a <strong>situated</strong> problem shaped by
+          context, relationships, meaning-making, and lived use.
+        </p>
+
+        <div class="framework" role="img" aria-label="Framework matrix showing mirror and self-portrait across checklist and situated ethics.">
+          <div class="corner">Ethics Lens × AI Lens</div>
+          <div class="label">Mirror</div>
+          <div class="label">Self-Portrait</div>
+
+          <div class="label">Checklist</div>
+          <div class="cell">
+            <h4>Mirror × Checklist</h4>
+            <p>
+              The paper emphasizes measurable harms, bias detection, fairness metrics, or governance mechanisms that treat
+              AI as reflecting problematic human data or patterns.
+            </p>
+          </div>
+          <div class="cell">
+            <h4>Self-Portrait × Checklist</h4>
+            <p>
+              The paper focuses on responsible design, standards, safeguards, or policy requirements that frame ethics as
+              something that can be engineered, documented, or enforced.
+            </p>
+          </div>
+
+          <div class="label">Situated</div>
+          <div class="cell">
+            <h4>Mirror × Situated</h4>
+            <p>
+              The paper explores how AI reproduces social meaning, identity, power, or human context, especially in lived
+              interaction rather than purely technical performance.
+            </p>
+          </div>
+          <div class="cell">
+            <h4>Self-Portrait × Situated</h4>
+            <p>
+              The paper treats AI as an expression of human choices, values, and assumptions that must be interpreted within
+              concrete settings of design, deployment, and use.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="card half" id="method">
+        <div class="kicker">3. Method</div>
+        <h2 class="section-title">Research method</h2>
+        <p class="lede">
+          The project used a systematic literature review approach combined with qualitative coding. The review identified
+          relevant papers, narrowed them using inclusion criteria, and then evaluated accepted papers through an iterative
+          coding process.
+        </p>
+        <ul class="criteria-list">
+          <li>Papers had to engage meaningfully with human-technology interaction, AI, or ethical framing.</li>
+          <li>Papers were screened for relevance rather than accepted solely because they mentioned ethics.</li>
+          <li>Both explicit and implicit ethical language were considered during coding.</li>
+          <li>Framework categories were refined as recurring patterns became visible across papers.</li>
+        </ul>
+      </section>
+
+      <section class="card half">
+        <div class="kicker">4. Why coding matters</div>
+        <h2 class="section-title">From reading to classification</h2>
+        <p class="lede">
+          Coding transformed close reading into a repeatable method. Instead of simply summarizing papers, the process asked:
+          what kind of ethical problem is being described, where is responsibility located, and what language signals the
+          paper's assumptions about AI?
+        </p>
+        <div class="tag-row">
+          <span class="tag">language cues</span>
+          <span class="tag">ethical assumptions</span>
+          <span class="tag">axis placement</span>
+          <span class="tag">borderline cases</span>
+          <span class="tag">iterative refinement</span>
+        </div>
+      </section>
+
+      <section class="card full" id="coding">
+        <div class="kicker">5. Coding process</div>
+        <h2 class="section-title">How each paper was evaluated</h2>
+        <p class="lede">
+          Each paper moved through the same general workflow. The goal was not to force a paper into a quadrant too early,
+          but to read for patterns, compare evidence, and justify placement using language from the paper itself.
+        </p>
+
+        <div class="steps">
+          <div class="step">
+            <div class="step-number">1</div>
+            <div>
+              <h4>Initial read</h4>
+              <p>
+                Read the title, abstract, keywords, and conclusion to identify the paper's main claim, domain, and ethical stance.
+              </p>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-number">2</div>
+            <div>
+              <h4>Locate ethical language</h4>
+              <p>
+                Mark phrases related to bias, responsibility, agency, governance, human values, meaning, interaction, fairness,
+                trust, safety, or social context.
+              </p>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-number">3</div>
+            <div>
+              <h4>Determine the AI lens</h4>
+              <p>
+                Ask whether the paper treats AI primarily as a reflection of human data and society (mirror) or as a product of
+                human design choices and intentions (self-portrait).
+              </p>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-number">4</div>
+            <div>
+              <h4>Determine the ethics lens</h4>
+              <p>
+                Ask whether the paper frames ethics as compliance, control, and requirements (checklist) or as relational,
+                contextual, and evolving in practice (situated).
+              </p>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-number">5</div>
+            <div>
+              <h4>Assign provisional placement</h4>
+              <p>
+                Place the paper in the quadrant that best matches its dominant framing, while noting overlap, tension, or ambiguity.
+              </p>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step-number">6</div>
+            <div>
+              <h4>Write justification notes</h4>
+              <p>
+                Record why the paper was placed there, including representative phrases, recurring themes, and any reasons the paper
+                could plausibly sit near a boundary rather than at the center of one quadrant.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card full" id="walkthrough">
+        <div class="kicker">6. Example walkthrough</div>
+        <h2 class="section-title">How one paper would be coded</h2>
+        <p class="lede">
+          The example below shows the logic of the coding process. Replace this sample paper description with one from your own review,
+          and the structure will still work. Think of this as the research equivalent of showing your work, not just your answer.
+        </p>
+
+        <div class="walkthrough">
+          <div>
+            <div class="paper-box">
+              <h3>Worked paper example</h3>
+              <p><strong>Paper:</strong> <em>What Is Meaningful Human-Computer Interaction? Understanding Freedom, Responsibility, and Noos in HCI Based on Viktor Frankl’s Existential Philosophy</em></p>
+              <p><strong>Core claim:</strong> HCI should understand users as meaning-seeking subjects and design with attention to freedom, responsibility, and noos.</p>
+              <p><strong>Why it matters here:</strong> This paper does not reduce ethics to fairness metrics or compliance requirements. It explicitly links design intent, embedded values, interaction, and situated meaning-making.</p>
+            </div>
+
+            <div class="panel">
+              <h3>Step-by-step interpretation</h3>
+              <ul class="bullet-list">
+                <li>
+                  <strong>What is the paper mostly concerned with?</strong><br />
+                  It asks what meaningful HCI is and how freedom, responsibility, and noos can be understood in relation to technology design and use.
+                </li>
+                <li>
+                  <strong>What language signals the mirror dimension?</strong><br />
+                  The paper emphasizes users as meaning-seeking subjects, highlights lived interaction, and discusses meaning as something that emerges through engagement, context, and use.
+                </li>
+                <li>
+                  <strong>What language signals the self-portrait dimension?</strong><br />
+                  The paper repeatedly points to designers' intentions, embedded notions of users, inscribed values, and the responsibility of designers in shaping technological artifacts.
+                </li>
+                <li>
+                  <strong>What language signals situated ethics?</strong><br />
+                  The paper argues that the existentials are interwoven, dynamic, and dependent on social and situational context. It rejects the idea that meaningfulness can be reduced to static traits or simple technical criteria.
+                </li>
+                <li>
+                  <strong>Does it fit checklist ethics?</strong><br />
+                  Only weakly. The paper mentions responsible AI and ethical requirements as part of the broader discourse, but its main contribution is not a compliance framework. Its center of gravity is clearly contextual and interpretive.
+                </li>
+                <li>
+                  <strong>What quadrant does this suggest?</strong><br />
+                  This is best coded as a <strong>hybrid paper</strong>: high mirror, high self-portrait, low checklist, and high situated ethics.
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div>
+            <div class="panel">
+              <h3>Provisional coding result</h3>
+              <div class="scorecard">
+                <div class="score-item">
+                  <strong>Mirror</strong>
+                  High — the paper centers users as meaning-seeking beings and emphasizes interaction, interpretation, and lived experience.
+                </div>
+                <div class="score-item">
+                  <strong>Self-Portrait</strong>
+                  High — the paper explicitly addresses designer intent, embedded values, notions of the user, and the responsibility built into design.
+                </div>
+                <div class="score-item">
+                  <strong>Checklist Ethics</strong>
+                  Low — compliance language appears at the edges, but the paper does not frame ethics primarily as standards, metrics, or procedural control.
+                </div>
+                <div class="score-item">
+                  <strong>Situated Ethics</strong>
+                  High — ethics is framed as contextual, relational, interwoven, and dependent on interaction, use, and social conditions.
+                </div>
+                <div class="score-item">
+                  <strong>Overall placement</strong>
+                  Hybrid / interdependent, leaning strongly toward the situated side of the framework.
+                </div>
+              </div>
+            </div>
+
+            <div class="panel" style="margin-top: 14px;">
+              <h3>What gets written into the notes</h3>
+              <p>
+                This paper is a strong theoretical anchor for the framework because it makes both sides of the mirror/self-portrait axis visible at once. On the one hand, it treats users as meaning-seeking subjects whose experience emerges through interaction, context, and use. On the other hand, it explicitly argues that technologies embed designer intentions, values, and assumptions about the user. Ethically, the paper is not centered on a checklist model. Instead, it frames meaningful HCI as dynamic, situated, and shaped by the interwovenness of freedom, responsibility, and noos across outcome, embeddedness, interaction, and usage. For coding purposes, it should be treated as a gold-standard example of a hybrid paper with strong situated emphasis.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card full">
+        <div class="kicker">7. Coding rubric</div>
+        <h2 class="section-title">Questions used while coding</h2>
+        <div class="rubric">
+          <div class="rubric-card">
+            <h4>Mirror or Self-Portrait?</h4>
+            <ul class="bullet-list">
+              <li>Does the paper describe AI as reflecting human data, institutions, or social behavior?</li>
+              <li>Does it instead emphasize human design choices, intentions, or embedded values?</li>
+              <li>Is the system treated as an outcome of history, or as an artifact of deliberate construction?</li>
+            </ul>
+          </div>
+          <div class="rubric-card">
+            <h4>Checklist or Situated?</h4>
+            <ul class="bullet-list">
+              <li>Is ethics framed as compliance, policy, principles, benchmarks, or technical safeguards?</li>
+              <li>Does the paper emphasize context, use, relationships, interpretation, or meaning-making in practice?</li>
+              <li>Are ethical problems treated as stable requirements or as evolving conditions of lived interaction?</li>
+            </ul>
+          </div>
+          <div class="rubric-card">
+            <h4>Evidence in the paper</h4>
+            <ul class="bullet-list">
+              <li>What repeated terms or metaphors appear across abstract, method, and discussion?</li>
+              <li>What counts as harm, responsibility, or success in the authors' framing?</li>
+              <li>What is left out that might reveal the paper's assumptions?</li>
+            </ul>
+          </div>
+          <div class="rubric-card">
+            <h4>Ambiguity handling</h4>
+            <ul class="bullet-list">
+              <li>Does the paper sit clearly in one quadrant or along a boundary?</li>
+              <li>Which dimension is strongest, and which is more mixed?</li>
+              <li>What note should be recorded to explain uncertainty for future review?</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="card full" id="dataset">
+        <div class="kicker">8. Outputs and future use</div>
+        <h2 class="section-title">What this process produces</h2>
+        <p class="lede">
+          The immediate output of this method is a structured map of papers across the framework. A second output is a labeled dataset
+          that records paper metadata, coded placement, and justification notes. That dataset creates a foundation for future phases,
+          including comparison across subfields, trend analysis, and possible supervised classification.
+        </p>
+        <div class="process-line">
+          <div class="process-node">Accepted papers</div>
+          <div class="arrow">→</div>
+          <div class="process-node">Coded quadrants</div>
+          <div class="arrow">→</div>
+          <div class="process-node">Justification notes</div>
+          <div class="arrow">→</div>
+          <div class="process-node">Labeled dataset</div>
+          <div class="arrow">→</div>
+          <div class="process-node">Future classifier / lifecycle mapping</div>
+        </div>
+        <div class="callout">
+          In other words: the framework is both an interpretive tool for this review and a reusable structure for future research.
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+    </footer>
+  </div>
+</body>
+</html>
